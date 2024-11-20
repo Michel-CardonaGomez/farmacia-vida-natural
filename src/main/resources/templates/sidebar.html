@@ -1,0 +1,143 @@
+<nav th:fragment="sidebar" id="sidebar">
+  <div id="sidebar_content">
+    <div id="user">
+      <img th:src="@{/imagenes/logo.svg}" id="user_avatar" alt="Avatar" />
+
+      <p id="user_infos">
+        <span class="item-description" th:text="${empleadoAuth.getName()}"></span>
+        <span class="item-description" th:text="${empleadoAuth.getRol()}"></span>
+      </p>
+    </div>
+
+    <ul id="side_items">
+
+      <!-- Dashboard -->
+      <li sec:authorize="hasRole('ROLE_ADMINISTRADOR')" class="side-item">
+        <a th:href="@{/admin/dashboard}">
+          <i class="fa-solid fa-tachometer-alt"></i>
+          <span class="item-description"> Dashboard </span>
+          <div class="tooltip">Dashboard</div>
+        </a>
+      </li>
+
+      <!-- Productos con submenú -->
+      <li class="side-item">
+        <a href="#productosSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <i class="fa-solid fa-box-open"></i>
+          <span class="item-description"> Gestion Productos </span>
+          <div class="tooltip">Gestion Productos</div>
+        </a>
+        <ul class="collapse list-unstyled" id="productosSubmenu">
+          <li>
+            <a th:href="@{/productos}">
+              <i class="fa-solid fa-box"></i>
+              <span class="item-description"> Productos </span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/marcas}">
+              <i class="fa-solid fa-tags"></i>
+              <span class="item-description"> Marcas </span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/categorias}">
+              <i class="fa-solid fa-layer-group"></i>
+              <span class="item-description"> Categorías </span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/subcategorias}">
+              <i class="fa-solid fa-stream"></i>
+              <span class="item-description"> Subcategorías </span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Facturas con submenú -->
+      <li class="side-item">
+        <a href="#reportesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span class="item-description"> Facturas </span>
+          <div class="tooltip">Facturas</div>
+        </a>
+        <ul class="collapse list-unstyled" id="reportesSubmenu">
+          <li>
+            <a th:href="@{/facturas/ventas}">
+              <i class="fa-solid fa-cart-plus"></i>
+              <span class="item-description"> Nueva Venta </span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/facturas/compras}">
+              <i class="fa-solid fa-shopping-cart"></i>
+              <span class="item-description"> Nueva Compra </span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Clientes -->
+      <li class="side-item">
+        <a th:href="@{/clientes}">
+          <i class="fa-solid fa-address-book"></i>
+          <span class="item-description"> Clientes </span>
+          <div class="tooltip">Clientes</div>
+        </a>
+      </li>
+
+      <!-- Empleados -->
+      <li sec:authorize="hasRole('ROLE_ADMINISTRADOR')" class="side-item">
+        <a th:href="@{/admin/empleados}">
+          <i class="fa-solid fa-users"></i>
+          <span class="item-description"> Empleados </span>
+          <div class="tooltip">Empleados</div>
+        </a>
+      </li>
+
+      <!-- Proveedores -->
+      <li class="side-item">
+        <a th:href="@{/proveedores}">
+          <i class="fa-solid fa-handshake"></i>
+          <span class="item-description"> Proveedores </span>
+          <div class="tooltip">Proveedores</div>
+        </a>
+      </li>
+
+      <!-- Reportes -->
+      <li sec:authorize="hasRole('ROLE_ADMINISTRADOR')" class="side-item">
+        <a th:href="@{/admin/reportes}">
+          <i class="fa-solid fa-chart-line"></i>
+          <span class="item-description"> Reportes </span>
+          <div class="tooltip">Reportes</div>
+        </a>
+      </li>
+      <!-- Opción de Perfil -->
+      <li class="side-item">
+        <a th:href="@{/perfil}">
+          <i class="fa-solid fa-user"></i> <!-- Ícono de perfil -->
+          <span class="item-description"> Perfil </span>
+          <div class="tooltip">Perfil</div>
+        </a>
+      </li>
+    </ul>
+
+    <button id="open_btn">
+      <i id="open_btn_icon" class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Logout -->
+  <div id="logout">
+    <form th:action="@{/logout}" th:method="post">
+      <div>
+        <button type="submit" id="logout_btn">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="item-description"> Logout </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</nav>
+

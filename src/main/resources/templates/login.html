@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" type="text/css" href="../static/css/login.css" th:href="@{/css/login.css}">
+  <link rel="stylesheet" type="text/css" href="../static/css/css/all.min.css" th:href="@{/css/css/all.min.css}">
+</head>
+<body>
+<img class="wave" src="../static/imagenes/wave.svg" th:src="@{/imagenes/wave.svg}">
+<div class="contenedor">
+  <div class="img">
+    <img src="../static/imagenes/doctors.svg"  th:src="@{/imagenes/doctors.svg}">
+  </div>
+  <div class="contenido-login">
+    <form th:action="@{/login}" th:method="post">
+      <img src="../static/imagenes/logo.svg" th:src="@{/imagenes/logo.svg}">
+      <h2>Farmacia</h2>
+      <div class="input-div user">
+        <div class="i">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="div">
+          <h5>Email:</h5>
+          <input type="text" name="email" class="input">
+        </div>
+      </div>
+      <div class="input-div pass">
+        <div class="i">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="div">
+          <h5>Contraseña:</h5>
+          <input type="password" name="contrasena" class="input">
+        </div>
+      </div>
+      <div th:if="${errorMessage}" class="error-message">
+        <p th:text="${errorMessage}"></p>
+      </div>
+      <div class="link-registro">
+        <h4>¿Aún no tienes una cuenta?</h4>
+        <a th:href="@{/registro}">Registrate aquí</a>
+      </div>
+      <input type="submit" class="btn" value="Iniciar sesión">
+      <a th:href="@{/oauth2/authorization/google}" class="btn btn-google">
+        <i class="fab fa-google"></i> Iniciar sesión con Google
+      </a>
+
+
+    </form>
+  </div>
+</div>
+</body>
+<script src="../static/js/login.js" th:src="@{/js/login.js}"></script>
+</html>
