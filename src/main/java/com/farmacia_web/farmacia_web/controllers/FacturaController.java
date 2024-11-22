@@ -172,7 +172,7 @@ public class FacturaController {
                              @RequestParam(value = "total", required = false) BigDecimal total,
                              @RequestParam("metodoPago") String metodoPago,
                              @RequestParam(value = "cliente", required = false) Long idCliente, RedirectAttributes rm) {
-        if (total == null) {
+        if (total == null || total.equals(BigDecimal.ZERO)) {
             rm.addFlashAttribute("errorMessage", "Seleccione productos para realizar la venta");
             return "redirect:/facturas/ventas";
         }
@@ -242,10 +242,10 @@ public class FacturaController {
     @Transactional
     public String nuevaCompra(@ModelAttribute DetallesComprasListWrapper detallesComprasListWrapper,
                               Model model, Principal principal,
-                              @RequestParam("total") BigDecimal total,
+                              @RequestParam(value = "total", required = false) BigDecimal total,
                               @RequestParam("metodoPago") String metodoPago,
                               @RequestParam(value = "idProveedor", required = false) Long idProveedor, RedirectAttributes rm) {
-        if (total == null) {
+        if (total == null || total.equals(BigDecimal.ZERO)) {
             rm.addFlashAttribute("errorMessage", "Seleccione productos para realizar la compra");
             return "redirect:/facturas/compras";
         }

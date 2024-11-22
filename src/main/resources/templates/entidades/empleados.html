@@ -96,12 +96,15 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="cedula">Cédula:</label>
                             <input type="text" id="cedula" th:field="*{identificacion}" class="form-control" required />
-                            <small class="text-danger" id="error-cedula"></small>
+                            <small class="text-danger" th:if="${#fields.hasErrors('identificacion')}"
+                                   th:errors="*{identificacion}"></small>
                         </div>
+
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="nombre">Nombre:</label>
                             <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required />
-                            <small class="text-danger" id="error-nombre"></small>
+                            <small class="text-danger" th:if="${#fields.hasErrors('nombre')}"
+                                   th:errors="*{nombre}"></small>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -109,14 +112,16 @@
                         <div class="input-group">
                             <span class="input-group-text">@</span>
                             <input type="email" id="email" th:field="*{email}" class="form-control" required />
-                            <small class="text-danger" id="error-email"></small>
+                            <small class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                   th:errors="*{email}"></small>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="telefono">Teléfono:</label>
                             <input type="text" id="telefono" th:field="*{telefono}" class="form-control" required />
-                            <small class="text-danger" id="error-telefono"></small>
+                            <small class="text-danger" th:if="${#fields.hasErrors('telefono')}"
+                                   th:errors="*{telefono}"></small>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="rol">Rol:</label>
@@ -124,6 +129,8 @@
                                 <option value="administrador">Administrador</option>
                                 <option value="empleado">Empleado</option>
                             </select>
+                            <small class="text-danger" th:if="${#fields.hasErrors('rol')}"
+                                   th:errors="*{rol}"></small>
                         </div>
                     </div>
                     <div class="boton editar-boton">

@@ -98,7 +98,17 @@ public class EmpleadoController {
      * @return Redirección a la lista de empleados después de actualizarla.
      */
     @PostMapping("/{id}")
-    public String actualizarEmpleado(@PathVariable Long id, @ModelAttribute("empleado") Empleado empleado, Model model, RedirectAttributes rm) {
+    public String actualizarEmpleado(@PathVariable Long id, @Valid @ModelAttribute("empleado") Empleado empleado, BindingResult bindingResult, Model model, RedirectAttributes rm, Authentication authentication) {
+        EmpleadoDetails empleadoDetails = (EmpleadoDetails) authentication.getPrincipal();
+        if (bindingResult.hasErrors()){
+            model.addAttribute("empleado", empleado);
+            model.addAttribute("empleadoAuth", empleadoDetails);
+            model.addAttribute("empleado", empleado);
+            model.addAttribute("empleados", empleadoService.obtenerEmpleados());
+            return "entidades/empleados";
+        }
+
+
         try {
             empleadoService.actualizarEmpleadoPorId(empleado, id);
             rm.addFlashAttribute("message", "Empleado actualizado con éxito.");

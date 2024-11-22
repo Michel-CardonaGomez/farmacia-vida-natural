@@ -21,12 +21,7 @@ function toggleForm() {
     }
 }
 
-// Asegúrate de que los contenedores de los formularios estén ocultos al cargar la página
-document.addEventListener("DOMContentLoaded", function() {
-    const editFormContainer = document.getElementById("edit-form-container");
 
-    editFormContainer.style.display = "none";
-});
 
 const containerCompras = document.getElementById("container-compras");
 const btnMostrarVentas = document.getElementById("mostar-btn-ventas");

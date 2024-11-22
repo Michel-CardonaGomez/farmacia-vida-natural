@@ -46,8 +46,8 @@ function agregarProducto(button) {
 
     // Buscar si el producto ya está en la factura
     facturaBody.querySelectorAll('tr').forEach(row => {
-        const productoIdInput = row.querySelector(`input[name*="producto"]`);
-        if (productoIdInput && productoIdInput.value === id) {
+        const productoId = row.dataset.productoId; // Tomar el ID directamente del atributo data-producto-id
+        if (productoId === id) {
             const cantidadTd = row.querySelector('td:nth-child(5)');
             const subtotalTd = row.querySelector('td:nth-child(6)');
 
@@ -96,10 +96,6 @@ function agregarProducto(button) {
         <td>${precio.toLocaleString('es-CO')}</td>
         <td>${cantidad}</td>
         <td>${subtotal.toLocaleString('es-CO')}</td>
-        <input type="hidden" name="detallesVenta[${productoCount}].producto" value="${id}">
-        <input type="hidden" name="detallesVenta[${productoCount}].precioVenta" value="${precio}">
-        <input type="hidden" name="detallesVenta[${productoCount}].cantidad" value="${cantidad}">
-        <input type="hidden" name="detallesVenta[${productoCount}].subtotal" value="${subtotal}">
     `;
 
     facturaBody.appendChild(row);
@@ -239,6 +235,40 @@ function agregarProductoTablet() {
     actualizarTotalFactura();
     cantidadInputTablet.value = 1;
 }
+
+document.getElementById('formFactura').addEventListener('submit', function (event) {
+    event.preventDefault(); // Evitar el envío automático inicial del formulario
+    generarInputsOcultos(this); // Pasar el formulario a la función
+});
+
+function generarInputsOcultos(form) {
+    const facturaBody = document.getElementById('facturaBody');
+    const inputsOcultosContainer = document.getElementById('inputsOcultos'); // Contenedor para los inputs
+
+    // Eliminar inputs ocultos existentes en el contenedor
+    inputsOcultosContainer.innerHTML = '';
+
+    // Crear nuevos inputs ocultos basados en las filas de la tabla
+    let productoCount = 0;
+    facturaBody.querySelectorAll('tr').forEach(row => {
+        const id = row.dataset.productoId;
+        const subtotal = parseFloat(row.dataset.subtotal);
+        const cantidad = row.querySelector('td:nth-child(5)').textContent;
+        const precio = parseFloat(row.querySelector('td:nth-child(4)').textContent.replace(/\./g, '').replace(',', '.'));
+
+        inputsOcultosContainer.insertAdjacentHTML('beforeend', `
+            <input type="hidden" name="detallesVenta[${productoCount}].producto" value="${id}">
+            <input type="hidden" name="detallesVenta[${productoCount}].precioVenta" value="${precio}">
+            <input type="hidden" name="detallesVenta[${productoCount}].cantidad" value="${cantidad}">
+            <input type="hidden" name="detallesVenta[${productoCount}].subtotal" value="${subtotal}">
+        `);
+        productoCount++;
+    });
+
+    // Enviar el formulario automáticamente después de generar los inputs
+    form.submit();
+}
+
 
 // Función para remover tildes
 function removerTildes(str) {

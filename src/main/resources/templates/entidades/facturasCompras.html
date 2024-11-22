@@ -157,39 +157,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        const serialFactura = document.getElementById("serialFactura").textContent.trim()
-        const facturaUrl = `/archivos/facturasCompras/${serialFactura}.pdf`;
-        window.onload = function() {
-            verificarContenido(); // Ejecutar la verificación cuando la página se cargue
-        };
-
-        function verificarContenido() {
-            // Intenta obtener el mensaje de error y éxito
-            const errorMessageElement = document.getElementById("errorMessage");
-            const successMessageElement = document.getElementById("message");
-
-            if (errorMessageElement) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: errorMessageElement.textContent.trim(),
-                });
-            } else if (successMessageElement) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: successMessageElement.textContent.trim(),
-                    showCancelButton: true,
-                    cancelButtonText: 'OK',
-                    confirmButtonText: 'Visualizar Factura',
-                    preConfirm: () => {
-                        window.open(facturaUrl, '_blank');
-                    }
-                });
-            }
-        }
-    </script>
+    <script src="../static/js/alerts.js" th:src="@{/js/alerts.js}"></script>
     <script src="../../static/js/modal.js" th:src="@{/js/modal.js}"></script>
     <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}"></script>
     <script src="../static/js/FacturaCompra.js" th:src="@{/js/FacturaCompra.js}"></script>
