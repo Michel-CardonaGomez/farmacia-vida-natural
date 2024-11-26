@@ -286,8 +286,8 @@
                     <td sec:authorize="hasRole('ROLE_ADMINISTRADOR')" data-label="Actualización" th:text="${producto.actualizacion}"></td>
                     <td data-label="Acciones">
                         <a th:href="@{/productos/editar/{id}(id=${producto.id})}" class="boton">Editar</a>
-                        <a th:href="@{/productos/eliminar/{id}(id=${producto.id})}" class="boton"
-                           onclick="return confirm('¿Estás seguro de que deseas eliminar esta subcategoría?');">Eliminar</a>
+                        <a sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:href="@{/productos/eliminar/{id}(id=${producto.id})}" class="boton"
+                           onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
                     </td>
                 </tr>
                 </tbody>

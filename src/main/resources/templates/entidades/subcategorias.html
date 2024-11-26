@@ -130,7 +130,7 @@
                     <td data-label="Actualización" th:text="${subcategoria.actualizacion}"></td>
                     <td data-label="Acciones">
                         <a th:href="@{/subcategorias/editar/{id}(id=${subcategoria.id})}" class="boton">Editar</a>
-                        <a th:href="@{/subcategorias/eliminar/{id}(id=${subcategoria.id})}" class="boton"
+                        <a sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:href="@{/subcategorias/eliminar/{id}(id=${subcategoria.id})}" class="boton"
                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta subcategoría?');">Eliminar</a>
                     </td>
                 </tr>

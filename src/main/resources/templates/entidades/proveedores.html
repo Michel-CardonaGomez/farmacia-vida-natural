@@ -180,7 +180,7 @@
                     <td data-label="Actualización" th:text="${proveedor.actualizacion}"></td>
                     <td data-label="Acciones">
                         <a th:href="@{/proveedores/editar/{id}(id=${proveedor.id})}" class="boton">Editar</a>
-                        <a th:href="@{/proveedores/eliminar/{id}(id=${proveedor.id})}" class="boton"
+                        <a sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:href="@{/proveedores/eliminar/{id}(id=${proveedor.id})}" class="boton"
                            onclick="return confirm('¿Estás seguro de que deseas eliminar este proveedor?');">Eliminar</a>
                     </td>
                 </tr>
