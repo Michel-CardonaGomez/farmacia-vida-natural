@@ -1,0 +1,98 @@
+.formulario {
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra */
+    margin: 20px; /* Margen alrededor del contenedor */
+    background: #81C784;
+    padding: 20px;
+    height: fit-content;
+    display: flex;
+}
+.form-container {
+    position: relative; /* Necesario para que el botón de cerrar se posicione relativo a este contenedor */
+}
+
+.text-danger {
+    font-weight: bold;
+    color: black !important;
+}
+.mostrar-form{
+    display: flex !important;
+}
+.close-boton {
+    position: absolute; /* Posiciona el botón de cierre de manera absoluta */
+    top: 10px; /* Ajusta la distancia desde la parte superior */
+    right: 10px; /* Ajusta la distancia desde el lado derecho */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    background-color: transparent; /* Fondo transparente */
+    border: none; /* Sin bordes */
+    font-size: 20px; /* Tamaño del icono */
+    color: #000; /* Cambia el color según tu diseño */
+}
+
+.row{
+    padding: 10px;
+}
+
+.container-fluid label{
+    font-size: 17px;
+    font-weight: bold;
+}
+.form-container input {
+    width: 100%;
+}
+.create-button {
+    background-color: #28a745; /* Color verde para crear empleado */
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px;
+    color: black;
+    border: none; /* Sin bordes */
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer; /* Cambiar cursor a mano */
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+.create-button:hover {
+    background-color: #005B33; /* Color de fondo más oscuro al pasar el mouse */
+}
+.boton{
+    display: flex;
+    justify-content: right;
+}
+
+/* Estilos para pantallas de celulares (menores a 576px) */
+@media (max-width: 576px) {
+    .formulario {
+        padding: 10px; /* Reduce el espaciado interno */
+    }
+    /* Ajusta el tamaño de los textos si es necesario */
+    .form-label {
+        font-size: 14px; /* Tamaño de texto más grande para mejor legibilidad */
+    }
+}
+
+/* Estilos para tablets pequeñas (576px a 768px) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .formulario {
+        padding: 15px; /* Mantiene un espaciado interno cómodo */
+    }
+    .form-label {
+        font-size: 16px; /* Ajusta el tamaño de texto */
+    }
+
+
+}
+
+/* Estilos para tablets medianas (768px a 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+    .formulario {
+        padding: 20px; /* Espaciado interno regular */
+    }
+    .form-label {
+        font-size: 18px; /* Ajusta el tamaño de texto */
+    }
+
+
+}
+
+
+

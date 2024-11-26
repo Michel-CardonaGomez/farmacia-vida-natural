@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Facturas Ventas</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../static/css/css/all.min.css" th:href="@{/css/css/all.min.css}"/>
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    /><!-- Enlaza Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../static/css/catalogo.css" th:href="@{/css/catalogo.css}" />
+    <link rel="stylesheet" href="../../static/css/sidebar.css" th:href="@{/css/sidebar.css}" />
+    <link rel="stylesheet" href="../../static/css/tabla.css" th:href="@{/css/tabla.css}" />
+    <link rel="stylesheet" href="../../static/css/form.css" th:href="@{/css/form.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        <div th:replace="~{sidebar :: sidebar}"></div>
+    </div>
+    <div class="contenido-principal col-md-12">
+        <h1>Farmacia Vida natural (Factura de venta)</h1>
+
+
+        <div class="catalogo-productos">
+            <input type="text" id="search-input"  placeholder="Buscar...">
+
+            <!-- Crear un rango manualmente -->
+                <div th:each="fila : ${#numbers.sequence(0, filas - 1)}" class="row productos-container">
+                        <div th:each="producto, iterStat : ${productos}"
+                             th:if="${iterStat.index >= fila * 4 && iterStat.index < (fila + 1) * 4}" class="col-md-3 producto mb-4 container-producto" th:classappend="${producto.estado != 'Disponible' ? 'producto-rojo' : ''}">
+                            <div class="producto-info">
+                                <table class="data-table">
+                                    <tr> <p class="producto-nombre"
+                                            th:data-stock="${producto.existencias}"
+                                            th:data-id="${producto.id}"
+                                            th:data-nombre="${producto.nombre} + ' ' + ${producto.marca.nombre} + ' ' + ${producto.presentacion}"
+                                            th:data-codigo="${producto.codigo}"
+                                            th:data-iva="${producto.iva}"
+                                            th:data-precio="${producto.precioVenta}"
+                                            th:text="${producto.nombre} + ' ' + ${producto.marca.nombre} + ' ' + ${producto.presentacion}">
+                                        Nombre del producto
+                                    </p></tr>
+                                    <tr><p class="producto-precio" th:text="'$' + ${#numbers.formatDecimal(producto.precioVenta, 2, 'DEFAULT', 0, 'DEFAULT')}">Precio del producto</p></tr>
+                                    <tr>
+                                        <div class="agregar-producto" th:if="${producto.estado == 'Disponible'}">
+                                        <label class="cantidad-label" for="cantidad">Cantidad:</label>
+                                        <input id="cantidad" class="cantidad-input" type="number" min="1" value="1" required>
+                                        <button class="agregar-btn" onclick="agregarProducto(this)">+</button>
+                                    </div>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+        <div class="container-factura col-md-12">
+            <div class="info-entidad">
+                <form th:action="@{/facturas/ventas}" th:method="get">
+                <label for="identificacion">identificacion:</label>
+                <div class="row">
+                    <input th:value="${cliente.identificacion}" id="identificacion" type="text" name="identificacion" placeholder="Ingrese la identificacion del cliente">
+                    <button type="submit" class="boton">Buscar</button>
+                </div>
+                <label for="nombre-cliente">Nombre:</label>
+                <input id="nombre-cliente" type="text" th:value="${cliente.nombre}" readonly placeholder="Nombre del cliente buscado">
+                </form>
+            </div>
+
+            <div class="buscador-tablets">
+                <!-- Select2 para buscar producto -->
+                <div class="buscador-productos">
+                    <div class="info-producto">
+                        <label for="productoSelect">Buscar Producto:</label>
+                        <select id="productoSelect" style="width: 100%;">
+                            <!-- Opción por defecto -->
+                            <option value="" disabled selected>Seleccione un producto</option>
+                            <!-- Iterar sobre los productos en Thymeleaf -->
+                            <th:block th:each="producto : ${productos}">
+                                <option class="producto-nombre"
+                                        th:data-stock="${producto.existencias}"
+                                        th:data-id="${producto.id}"
+                                        th:data-nombre="${producto.nombre} + ' ' + ${producto.marca.nombre} + ' ' + ${producto.presentacion}"
+                                        th:data-codigo="${producto.codigo}"
+                                        th:data-iva="${producto.iva}"
+                                        th:data-precio="${producto.precioVenta}"
+                                        th:value="${producto.id}"
+                                        th:text="${producto.nombre} + ' ' + ${producto.marca.nombre} + ' ' + ${producto.presentacion}">
+                                </option>
+                            </th:block>
+                        </select>
+
+                        <!-- Campo de cantidad -->
+                        <div class="cantidad-producto">
+                            <label for="cantidadTablet">Cantidad:</label>
+                            <input id="cantidadTablet" type="number">
+                            <button class="boton" onclick="agregarProductoTablet()">Añadir a la Factura</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabla-factura">
+                <form id="formFactura" th:action="@{/facturas/nueva-venta}" th:method="post">
+                    <input type="hidden" name="cliente" th:value="${cliente.id}">
+                    <table id="tablaFactura" class="table table-bordered text-end">
+                    <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>IVA</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                    </thead>
+                    <tbody id="facturaBody">
+
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end fw-bold">Total:</td>
+                        <td id="totalFactura" colspan="2"></td>
+                        <input type="hidden" id="inputTotal" name="total">
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-end fw-bold">Método de Pago:</td>
+                        <td colspan="2">
+                            <select name="metodoPago" id="metodoPago">
+                                <option value="efectivo">Efectivo</option>
+                                <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                <option value="transferencia">Transferencia Bancaria</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <button type="submit" class="btn btn-success mt-2"> <i class="fas fa-file-invoice"></i>Generar Factura</button>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+                    <div id="inputsOcultos"></div> <!-- Contenedor para los inputs ocultos -->
+                </form>
+            </div>
+        </div>
+        <div>
+            <div style="display: none;" th:if="${serialFactura}">
+                <p class="text-danger" id="serialFactura" th:text="${serialFactura}"></p>
+            </div>
+            <div style="display: none;" th:if="${errorMessage}">
+                <p class="text-danger" id="errorMessage" th:text="${errorMessage}"></p>
+            </div>
+            <div style="display: none;" th:if="${message}">
+                <p class="text-danger" id="message" th:text="${message}"></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Enlaza jQuery (Select2 depende de jQuery) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Enlaza Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="../../static/js/modal.js" th:src="@{/js/modal.js}"></script>
+    <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}"></script>
+    <script src="../static/js/alerts.js" th:src="@{/js/alerts.js}"></script>
+    <script th:src="@{/js/FacturaVenta.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
